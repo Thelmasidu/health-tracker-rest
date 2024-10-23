@@ -1,0 +1,221 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Health Tracker API
+  description: This API provides endpoints for handling CRUD operations on the Health Tracker data.
+  contact:
+    name: Thelma Nwanesindu
+    email: 20109631@mail.wit.ie
+paths:
+  /api/users:
+    get:
+      summary: Retrieve all users
+      responses:
+        200:
+          description: A list of users in the app
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    post:
+      summary: Add a new user
+      requestBody:
+        description: The user data to add
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        200:
+          description: The user has been created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+                
+  /api/users/{user-id}:
+    get:
+      summary: Retrieve a user by ID
+      parameters:
+        - $ref: '#/components/parameters/UserIdPath'
+      responses:
+        200:
+          description: The user data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        404:
+          description: User not found
+    delete:
+      summary: Delete a user by ID
+      parameters:
+        - $ref: '#/components/parameters/UserIdPath'
+      responses:
+        200:
+          description: The deleted user's data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        404:
+          description: User not found
+    patch:
+      summary: Update a user by ID
+      parameters:
+        - $ref: '#/components/parameters/UserIdPath'
+      requestBody:
+        description: The updated user data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        200:
+          description: The updated user's data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        404:
+          description: User not found
+
+  /api/users/email/{user-email}:
+    get:
+      summary: Retrieve a user by email
+      parameters:
+        - in: path
+          name: user-email
+          description: User email path parameter
+          required: true
+          schema:
+            type: string
+            example: joe@soap.com
+      responses:
+        200:
+          description: The user data for the provided email
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        404:
+          description: User not found
+  /api/activities:
+     get:
+      responses:
+        200:
+          description: This is a list of the users in the app
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Activities'
+     post:
+      responses:
+        200:
+          description: This is a list of the users in the app
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Activities'
+  /api/users/:user-id/activities:
+     get:
+      responses:
+        200:
+          description: This is a list of the users in the app
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Activities'
+     delete:
+      responses:
+        200:
+          description: This is a list of the users in the app
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Activities'
+  /api/activities/:activity-id:
+     get:
+      responses:
+        200:
+          description: This is a list of the users in the app
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Activities'
+     delete:
+      responses:
+        200:
+          description: This is a list of the users in the app
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Activities'
+     patch:
+      responses:
+        200:
+          description: This is a list of the users in the app
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Activities'
+components:
+  parameters:
+    UserIdPath:
+      in: path
+      name: user-id
+      description: User id path parameter
+      required: true
+      schema:
+        type: integer
+        example: 3232
+  schemas:
+    User:
+      type: object
+      properties:
+        id: 
+          type: integer
+          example: 3232
+        name:
+          type: string
+          example: Joe Soap
+        email:
+          type: string
+          example: joe@soap.com
+    Email:
+      type: object
+      properties:
+        id: 
+          type: integer
+          example: 3232
+        email:
+          type: string
+          example: thelma@gmail.com
+    Activities:
+      type: object
+      properties:
+        id: 
+          type: integer
+          example: 3232
+        activity:
+          type: string
+          example: Walking
+          
