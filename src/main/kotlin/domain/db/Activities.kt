@@ -16,4 +16,5 @@ object Activities : Table("activities") {
     val userId = integer("user_id").references(Users.id, onDelete = ReferenceOption.CASCADE)
 
     override val primaryKey = PrimaryKey(Activities.id, name = "PK_Activities_ID")
+
 }
