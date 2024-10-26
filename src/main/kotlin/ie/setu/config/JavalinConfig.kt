@@ -3,6 +3,8 @@ package ie.setu.config
 import ie.setu.controllers.HealthTrackerController
 import io.javalin.Javalin
 import io.javalin.apibuilder.ApiBuilder.*
+import io.javalin.json.JavalinJackson
+import utils.jsonObjectMapper
 
 class JavalinConfig {
     private fun getRemoteAssignedPort(): Int {
@@ -13,11 +15,15 @@ class JavalinConfig {
     }
 
     fun startJavalinService(): Javalin {
-
-        val app = Javalin.create().apply {
-            exception(Exception::class.java) { e, ctx -> e.printStackTrace() }
-            error(404) { ctx -> ctx.json("404 - Not Found") }
-        }.start(getRemoteAssignedPort())
+        val app = Javalin.create {
+            //add this jsonMapper to serialise objects to json
+            it.jsonMapper(JavalinJackson(jsonObjectMapper()))
+        }
+            .apply{
+                exception(Exception::class.java) { e, ctx -> e.printStackTrace() }
+                error(404) { ctx -> ctx.json("404 - Not Found") }
+            }
+            .start(getRemoteAssignedPort())
 
         registerRoutes(app)
         return app
@@ -30,6 +36,9 @@ class JavalinConfig {
         app.get("/api/users/email/{user-email}", HealthTrackerController::getUserByEmail)
         app.delete("/api/users/{user-id}", HealthTrackerController::deleteUser)
         app.patch("/api/users/{user-id}", HealthTrackerController::updateUser)
+        app.get("/api/activities", HealthTrackerController::getAllActivities)
+        app.post("/api/activities", HealthTrackerController::addActivity)
+        app.get("/api/users/{user-id}/activities", HealthTrackerController::getActivitiesByUserId)
     }
 
 }
