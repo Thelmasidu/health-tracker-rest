@@ -35,7 +35,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-                
+
   /api/users/{user-id}:
     get:
       summary: Retrieve a user by ID
@@ -104,79 +104,108 @@ paths:
                 $ref: '#/components/schemas/User'
         404:
           description: User not found
+
   /api/activities:
-     get:
+    get:
+      summary: Retrieve all activities
       responses:
         200:
-          description: This is a list of the users in the app
-          content: 
+          description: A list of activities in the app
+          content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Activities'
-     post:
+    post:
+      summary: Add a new activity
+      requestBody:
+        description: The activity data to add
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Activities'
       responses:
         200:
-          description: This is a list of the users in the app
-          content: 
+          description: The activity has been created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Activities'
+
+  /api/users/{user-id}/activities:
+    get:
+      summary: Retrieve activities for a user
+      parameters:
+        - $ref: '#/components/parameters/UserIdPath'
+      responses:
+        200:
+          description: A list of activities for the user
+          content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Activities'
-  /api/users/:user-id/activities:
-     get:
+    delete:
+      summary: Delete activities for a user
+      parameters:
+        - $ref: '#/components/parameters/UserIdPath'
       responses:
         200:
-          description: This is a list of the users in the app
-          content: 
+          description: The activities have been deleted
+          content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Activities'
-     delete:
+
+  /api/activities/{activity-id}:
+    get:
+      summary: Retrieve a specific activity by ID
+      parameters:
+        - $ref: '#/components/parameters/ActivityIdPath'
       responses:
         200:
-          description: This is a list of the users in the app
-          content: 
+          description: The activity data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Activities'
+    delete:
+      summary: Delete a specific activity by ID
+      parameters:
+        - $ref: '#/components/parameters/ActivityIdPath'
+      responses:
+        200:
+          description: The activity has been deleted
+          content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Activities'
-  /api/activities/:activity-id:
-     get:
+    patch:
+      summary: Update a specific activity by ID
+      parameters:
+        - $ref: '#/components/parameters/ActivityIdPath'
+      requestBody:
+        description: The updated activity data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Activities'
       responses:
         200:
-          description: This is a list of the users in the app
-          content: 
+          description: The updated activity data
+          content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Activities'
-     delete:
-      responses:
-        200:
-          description: This is a list of the users in the app
-          content: 
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Activities'
-     patch:
-      responses:
-        200:
-          description: This is a list of the users in the app
-          content: 
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Activities'
+                $ref: '#/components/schemas/Activities'
+
 components:
   parameters:
     UserIdPath:
@@ -187,11 +216,20 @@ components:
       schema:
         type: integer
         example: 3232
+    ActivityIdPath:
+      in: path
+      name: activity-id
+      description: Activity id path parameter
+      required: true
+      schema:
+        type: integer
+        example: 101
+
   schemas:
     User:
       type: object
       properties:
-        id: 
+        id:
           type: integer
           example: 3232
         name:
@@ -200,22 +238,23 @@ components:
         email:
           type: string
           example: joe@soap.com
+
     Email:
       type: object
       properties:
-        id: 
+        id:
           type: integer
           example: 3232
         email:
           type: string
           example: thelma@gmail.com
+
     Activities:
       type: object
       properties:
-        id: 
+        id:
           type: integer
           example: 3232
         activity:
           type: string
           example: Walking
-          
