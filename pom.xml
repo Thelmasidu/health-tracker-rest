@@ -127,6 +127,19 @@
             <artifactId>exposed-jodatime</artifactId>
             <version>0.55.0</version>
         </dependency>
+        <!-- Unirest for Integration Testing -->
+        <dependency>
+            <groupId>com.konghq</groupId>
+            <artifactId>unirest-java-core</artifactId>
+            <version>4.4.4</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.konghq</groupId>
+            <artifactId>unirest-object-mappers-gson</artifactId>
+            <version>4.2.9</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <repositories>
