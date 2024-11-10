@@ -4,6 +4,7 @@ import domain.Activity
 import domain.repository.ActivityDAO
 import ie.setu.domain.repository.UserDAO
 import io.javalin.http.Context
+import org.jetbrains.exposed.sql.transactions.transaction
 import utils.jsonToObject
 
 object ActivityController {
@@ -14,10 +15,12 @@ object ActivityController {
 
     fun getAllActivities(ctx: Context) {
         //mapper handles the deserialization of Joda date into a String.
+
         val activities = activityDAO.getAll()
         if (activities.size != 0) {
             ctx.status(200)
-        } else {
+        }
+        else{
             ctx.status(404)
         }
         ctx.json(activities)
@@ -27,21 +30,25 @@ object ActivityController {
         if (userDao.findById(ctx.pathParam("user-id").toInt()) != null) {
             val activities = activityDAO.findByUserId(ctx.pathParam("user-id").toInt())
             if (activities.isNotEmpty()) {
-                //mapper handles the deserialization of Joda date into a String.
                 ctx.json(activities)
                 ctx.status(200)
-            } else {
+            }
+            else{
                 ctx.status(404)
             }
+        }
+        else{
+            ctx.status(404)
         }
     }
 
     fun getActivitiesByActivityId(ctx: Context) {
-        val activity = activityDAO.findByActivityId(ctx.pathParam("activity-id").toInt())
-        if (activity != null) {
+        val activity = activityDAO.findByActivityId((ctx.pathParam("activity-id").toInt()))
+        if (activity != null){
             ctx.json(activity)
             ctx.status(200)
-        } else {
+        }
+        else{
             ctx.status(404)
         }
     }
@@ -76,13 +83,16 @@ object ActivityController {
     }
 
     fun updateActivity(ctx: Context) {
-        val activity: Activity = jsonToObject(ctx.body())
-        val activityId = ctx.pathParam("activity-id").toInt()
+        transaction {
+            val activity: Activity = jsonToObject(ctx.body())
+            val activityId = ctx.pathParam("activity-id").toInt()
 
-        if (activityDAO.updateSpecificActivityById(activityId, activity) != 0) {
-            ctx.status(204)
-        } else {
-            ctx.status(404)
+            if (activityDAO.updateSpecificActivityById(activityId, activity) != 0) {
+                ctx.status(204)
+            } else {
+                ctx.status(404)
+            }
         }
     }
+
 }
