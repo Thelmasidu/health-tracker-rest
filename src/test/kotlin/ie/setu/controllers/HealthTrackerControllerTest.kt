@@ -42,24 +42,33 @@ class HealthTrackerControllerTest {
 
         @Test
         fun `get user by id when user does not exist returns 404 response`() {
+            // Arrange - use an invalid user id
+            val invalidUserId = -1 // or any other value you know won't exist
 
-            //Arrange - test data for user id
-            val id = Integer.MIN_VALUE
+            // Act - retrieve the user by id using the helper method
+            val retrieveResponse = retrieveUserById(invalidUserId)
 
-            // Act - attempt to retrieve the non-existent user from the database
-            val retrieveResponse = Unirest.get(origin + "/api/users/${id}").asString()
-
-            // Assert -  verify return code
+            // Assert - verify that the response status is 404
             assertEquals(404, retrieveResponse.status)
         }
+
 
         @Test
         fun `get user by email when user does not exist returns 404 response`() {
-            // Arrange & Act - attempt to retrieve the non-existent user from the database
-            val retrieveResponse = Unirest.get("$origin/api/users/email/${nonExistingEmail}").asString()
-            // Assert - verify return code
+            // Arrange - use a non-existent email
+            val nonExistingEmail = "nonexistent@example.com"
+
+            // Act - retrieve the user by email using the helper method
+            val retrieveResponse = retrieveUserByEmail(nonExistingEmail)
+
+            // Assert - verify that the response status is 404
             assertEquals(404, retrieveResponse.status)
         }
+
+
+
+
+
 
         @Test
         fun `getting a user by id when id exists, returns a 200 response`() {
@@ -122,57 +131,57 @@ class HealthTrackerControllerTest {
             assertEquals(204, deleteResponse.status)
         }
     }
-        @Nested
-        inner class UpdateUsers {
+    @Nested
+    inner class UpdateUsers {
 
-            @Test
-            fun `updating existing user in table results in successful update`() {
+        @Test
+        fun `updating existing user in table results in successful update`() {
 
 
-                    //Arrange - create and populate table with three users
-                    val retrieveResponse = Unirest.put(origin + "/api/users/").asString()
+            //Arrange - create and populate table with three users
+            val retrieveResponse = Unirest.put(origin + "/api/users/").asString()
 
-                    // Assert -  verify return code
-                    assertEquals(404, retrieveResponse.status)
+            // Assert -  verify return code
+            assertEquals(404, retrieveResponse.status)
 
-            }
+        }
 
         @Test
         fun `updating non-existant user in table results in no updates`() {
 
-                val response = Unirest.post(origin + "/api/users/").asString()
-                assertEquals(200, response.status)
+            val response = Unirest.post(origin + "/api/users/").asString()
+            assertEquals(200, response.status)
 
         }
 
-            @Test
-            fun `updating a user when it exists, returns a 204 response`() {
+        @Test
+        fun `updating a user when it exists, returns a 204 response`() {
 
-                //Arrange - add the user that we plan to do an update on
+            //Arrange - add the user that we plan to do an update on
 
-                val addedResponse = addUser(validName, validEmail)
-                val addedUser : User = jsonToObject(addedResponse.body.toString())
+            val addedResponse = addUser(validName, validEmail)
+            val addedUser : User = jsonToObject(addedResponse.body.toString())
 
-                //Act & Assert - update the email and name of the retrieved user and assert 204 is returned
-                assertEquals(204, updateUser(addedUser.id, updatedName, updatedEmail).status)
+            //Act & Assert - update the email and name of the retrieved user and assert 204 is returned
+            assertEquals(204, updateUser(addedUser.id, updatedName, updatedEmail).status)
 
-                //Act & Assert - retrieve updated user and assert details are correct
-                val updatedUserResponse = retrieveUserById(addedUser.id)
-                val updatedUser : User = jsonToObject(updatedUserResponse.body.toString())
-                assertEquals(updatedName, updatedUser.name)
-                assertEquals(updatedEmail, updatedUser.email)
+            //Act & Assert - retrieve updated user and assert details are correct
+            val updatedUserResponse = retrieveUserById(addedUser.id)
+            val updatedUser : User = jsonToObject(updatedUserResponse.body.toString())
+            assertEquals(updatedName, updatedUser.name)
+            assertEquals(updatedEmail, updatedUser.email)
 
-                //After - restore the db to previous state by deleting the added user
-                deleteUser(addedUser.id)
-            }
-
-            @Test
-            fun `updating a user when it doesn't exist, returns a 404 response`() {
-
-                //Act & Assert - attempt to update the email and name of user that doesn't exist
-                assertEquals(404, updateUser(-1, updatedName, updatedEmail).status)
-            }
+            //After - restore the db to previous state by deleting the added user
+            deleteUser(addedUser.id)
         }
+
+        @Test
+        fun `updating a user when it doesn't exist, returns a 404 response`() {
+
+            //Act & Assert - attempt to update the email and name of user that doesn't exist
+            assertEquals(404, updateUser(-1, updatedName, updatedEmail).status)
+        }
+    }
 
     @Nested
     inner class DeleteUsers {
