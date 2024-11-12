@@ -3,6 +3,7 @@ package ie.setu.config
 
 import ie.setu.ie.setu.controllers.UserController
 import ie.setu.ie.setu.controllers.ActivityController
+import ie.setu.ie.setu.controllers.HealthHistoryController
 import io.javalin.Javalin
 import io.javalin.apibuilder.ApiBuilder.*
 import io.javalin.json.JavalinJackson
@@ -46,6 +47,15 @@ class JavalinConfig {
         app.delete("/api/activities/{activity-id}", ActivityController::deleteSpecificActivity)
         app.patch("/api/activities/{activity-id}", ActivityController::updateActivity)
         app.get("/api/activities/{activity-id}", ActivityController::getActivitiesByActivityId)
+        app.get("/api/histories", HealthHistoryController::getAllHealthHistories)
+        app.post("/api/histories", HealthHistoryController::addHealthHistory)
+        app.get("/api/users/{user-id}/histories", HealthHistoryController::getHealthHistoriesByUserId)
+        app.delete("/api/users/{user-id}/histories", HealthHistoryController::deleteHealthHistoryByUser)
+        app.delete("/api/histories/{history-id}", HealthHistoryController::deleteSpecificHealthHistory)
+        app.patch("/api/histories/{history-id}", HealthHistoryController::updateHealthHistory)
+        app.get("/api/histories/{history-id}", HealthHistoryController::getHealthHistoriesByHealthHistoryId)
+
+
     }
 
 //    private fun registerRoutes(app: Javalin) {
