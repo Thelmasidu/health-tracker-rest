@@ -1,6 +1,5 @@
 package ie.setu.ie.setu.controllers
-import domain.Activity
-import domain.repository.ActivityDAO
+
 import ie.setu.domain.HealthHistory
 import ie.setu.domain.repository.HealthHistoryDAO
 import ie.setu.domain.repository.UserDAO
