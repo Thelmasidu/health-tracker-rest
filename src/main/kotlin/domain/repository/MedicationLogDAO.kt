@@ -1,7 +1,5 @@
 package ie.setu.domain.repository
 
-import domain.Activity
-import domain.db.Activities
 import ie.setu.domain.MedicationLog
 import ie.setu.domain.db.MedicationLogs
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
