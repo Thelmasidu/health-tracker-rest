@@ -4,6 +4,7 @@ package ie.setu.config
 import ie.setu.ie.setu.controllers.UserController
 import ie.setu.ie.setu.controllers.ActivityController
 import ie.setu.ie.setu.controllers.HealthHistoryController
+import ie.setu.ie.setu.controllers.MedicationLogController
 import io.javalin.Javalin
 import io.javalin.apibuilder.ApiBuilder.*
 import io.javalin.json.JavalinJackson
@@ -54,7 +55,13 @@ class JavalinConfig {
         app.delete("/api/histories/{history-id}", HealthHistoryController::deleteSpecificHealthHistory)
         app.patch("/api/histories/{history-id}", HealthHistoryController::updateHealthHistory)
         app.get("/api/histories/{history-id}", HealthHistoryController::getHealthHistoriesByHealthHistoryId)
-
+        app.get("/api/medication", MedicationLogController::getAllMedicationLogs)
+        app.post("/api/medication", MedicationLogController::addMedicationLog)
+        app.get("/api/users/{user-id}/medication", MedicationLogController::getMedicationLogsByUserId)
+        app.delete("/api/users/{user-id}/medication", MedicationLogController::deleteMedicationLogByUser)
+        app.delete("/api/medication/{medication-id}", MedicationLogController::deleteSpecificMedicationLog)
+        app.patch("/api/medication/{medication-id}", MedicationLogController::updateMedicationLog)
+        app.get("/api/medication/{medication-id}", MedicationLogController::getMedicationLogsByMedicationLogId)
 
     }
 
