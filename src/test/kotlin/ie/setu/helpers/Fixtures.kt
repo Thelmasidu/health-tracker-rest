@@ -5,9 +5,12 @@ import domain.db.Activities
 import domain.db.Users
 import domain.repository.ActivityDAO
 import ie.setu.domain.HealthHistory
+import ie.setu.domain.MedicationLog
 import ie.setu.domain.User
 import ie.setu.domain.db.HealthHistories
+import ie.setu.domain.db.MedicationLogs
 import ie.setu.domain.repository.HealthHistoryDAO
+import ie.setu.domain.repository.MedicationLogDAO
 import ie.setu.domain.repository.UserDAO
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.joda.time.DateTime
@@ -31,6 +34,12 @@ val updatedHeight = 6
 val updatedDateOfRecord = DateTime.parse("2020-06-11T05:59:27.258Z")
 val updatedBloodPressure = "Updated Blood Pressure"
 
+val updatedMedicationName = "Ibuprofin"
+val updatedDosage = 200.0
+val updatedFrequency = 3
+val updatedstarted = DateTime.parse("2024-11-01 08:00:00")
+val updatedended = DateTime.parse("2024-11-01 08:00:00")
+val updatedNotes= "Taken after meal"
 
 val users = arrayListOf<User>(
     User(name = "Alice Wonderland", email = "alice@wonderland.com", id = 1),
@@ -52,6 +61,12 @@ val healthHistories = arrayListOf(
     HealthHistory(id = 3, heartRate = 68, cholesterolLevels = 200.5, bloodSugarLevels = 105.5, weight = 80.5, height = 5.8, dateOfRecord = DateTime.now(), bloodPressure = "130/90", userId = 3)
 )
 
+val medicationLogs = arrayListOf(
+    MedicationLog(id = 1, medicationName = "Ibuprofen", dosage = 200.0, frequency = 3, started = DateTime.now(), ended = null, notes = "Taken after meals".toString(), userId = 1),
+    MedicationLog(id = 2, medicationName = "Paracetamol", dosage = 500.0, frequency = 2, started = DateTime.now(), ended = null, notes = "Take with water".toString(), userId = 2),
+    MedicationLog(id = 3, medicationName = "Amoxicillin", dosage = 250.5, frequency = 3, started = DateTime.now(), ended = null, notes = "Complete full course".toString(), userId = 3)
+)
+
 fun populateUserTable(): UserDAO {
     SchemaUtils.create(Users)
     val userDAO = UserDAO()
@@ -60,6 +75,7 @@ fun populateUserTable(): UserDAO {
     userDAO.save(users[2])
     return userDAO
 }
+
 fun populateActivityTable(): ActivityDAO {
     SchemaUtils.create(Activities)
     val activityDAO = ActivityDAO()
@@ -77,3 +93,12 @@ fun populateHealthHistoryTable(): HealthHistoryDAO {
     healthHistoryDAO.save(healthHistories[2])
     return healthHistoryDAO
 }
+
+    fun populateMedicationLogTable(): MedicationLogDAO {
+        SchemaUtils.create(MedicationLogs)
+        val medicationLogDAO = MedicationLogDAO()
+        medicationLogDAO.save(medicationLogs[0])
+        medicationLogDAO.save(medicationLogs[1])
+        medicationLogDAO.save(medicationLogs[2])
+        return medicationLogDAO
+    }
