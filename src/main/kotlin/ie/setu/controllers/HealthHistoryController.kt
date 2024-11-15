@@ -43,7 +43,7 @@ object HealthHistoryController {
     }
 
     fun getHealthHistoriesByHealthHistoryId(ctx: Context) {
-        val healthHistory = HealthHistoryController.healthHistoryDAO.findByHealthHistoryId((ctx.pathParam("activity-id").toInt()))
+        val healthHistory = HealthHistoryController.healthHistoryDAO.findByHealthHistoryId((ctx.pathParam("history-id").toInt()))
         if (healthHistory != null){
             ctx.json(healthHistory)
             ctx.status(200)
@@ -83,7 +83,7 @@ object HealthHistoryController {
     fun updateHealthHistory(ctx: Context) {
         transaction {
             val healthHistory: HealthHistory = jsonToObject(ctx.body())
-            val healthHistoryId = ctx.pathParam("healthHistory-id").toInt()
+            val healthHistoryId = ctx.pathParam("history-id").toInt()
 
             if (healthHistoryDAO.updateSpecificHealthHistoryById(healthHistoryId, healthHistory) != 0) {
                 ctx.status(204)
