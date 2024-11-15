@@ -37,8 +37,8 @@ val updatedBloodPressure = "Updated Blood Pressure"
 val updatedMedicationName = "Ibuprofin"
 val updatedDosage = 200.0
 val updatedFrequency = 3
-val updatedstarted = DateTime.parse("2024-11-01 08:00:00")
-val updatedended = DateTime.parse("2024-11-01 08:00:00")
+val updatedstarted = DateTime.parse("2020-06-11T05:59:27.258Z")
+val updatedended = DateTime.parse("2020-06-11T05:59:27.258Z")
 val updatedNotes= "Taken after meal"
 
 val users = arrayListOf<User>(
@@ -62,9 +62,9 @@ val healthHistories = arrayListOf(
 )
 
 val medicationLogs = arrayListOf(
-    MedicationLog(id = 1, medicationName = "Ibuprofen", dosage = 200.0, frequency = 3, started = DateTime.now(), ended = null, notes = "Taken after meals".toString(), userId = 1),
-    MedicationLog(id = 2, medicationName = "Paracetamol", dosage = 500.0, frequency = 2, started = DateTime.now(), ended = null, notes = "Take with water".toString(), userId = 2),
-    MedicationLog(id = 3, medicationName = "Amoxicillin", dosage = 250.5, frequency = 3, started = DateTime.now(), ended = null, notes = "Complete full course".toString(), userId = 3)
+    MedicationLog(id = 1, medicationName = "Ibuprofen", dosage = 200.0, frequency = 3, started = DateTime.now(), ended = null, notes = "Taken after meals", userId = 1),
+    MedicationLog(id = 2, medicationName = "Paracetamol", dosage = 500.0, frequency = 2, started = DateTime.now(), ended = null, notes = "Take with water", userId = 2),
+    MedicationLog(id = 3, medicationName = "Amoxicillin", dosage = 250.5, frequency = 3, started = DateTime.now(), ended = null, notes = "Complete full course", userId = 3)
 )
 
 fun populateUserTable(): UserDAO {
