@@ -75,17 +75,17 @@ class HealthHistoryDAOTest {
             }
         }
 
-//        @Test
-//        fun `get history by id that exists, results in correct history returned`() {
-//            transaction {
-//                val userDAO = populateUserTable()
-//                val healthHistoryDAO = populateHealthHistoryTable()
-//
-//                assertEquals(healthHistory1, healthHistoryDAO.findByUserId(1)[0])
-//                assertEquals(healthHistory2, healthHistoryDAO.findByUserId(1)[1])
-//                assertEquals(healthHistory3, healthHistoryDAO.findByUserId(2)[0])
-//            }
-//        }
+        @Test
+        fun `get history by id that exists, results in correct history returned`() {
+            transaction {
+                val userDAO = populateUserTable()
+                val healthHistoryDAO = populateHealthHistoryTable()
+
+                assertEquals(healthHistory1, healthHistoryDAO.findByUserId(1)[0])
+                assertEquals(healthHistory2, healthHistoryDAO.findByUserId(2)[0])
+                assertEquals(healthHistory3, healthHistoryDAO.findByUserId(3)[0])
+            }
+        }
 
         @Test
         fun `get all histories over empty table returns none`() {
