@@ -1,8 +1,6 @@
 package ie.setu.ie.setu.controllers
 
-import domain.Activity
 import ie.setu.domain.MedicationLog
-import ie.setu.domain.db.MedicationLogs
 import ie.setu.domain.repository.MedicationLogDAO
 import ie.setu.domain.repository.UserDAO
 import io.javalin.http.Context
