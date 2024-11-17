@@ -5,9 +5,11 @@ import domain.db.Activities
 import domain.db.Users
 import ie.setu.domain.HealthHistory
 import ie.setu.domain.MedicationLog
+import ie.setu.domain.SleepRecord
 import ie.setu.domain.User
 import ie.setu.domain.db.HealthHistories
 import ie.setu.domain.db.MedicationLogs
+import ie.setu.domain.db.SleepRecords
 import org.jetbrains.exposed.sql.ResultRow
 
 fun mapToUser(it: ResultRow) = User(
@@ -44,4 +46,11 @@ fun mapToMedicationLog(it: ResultRow) = MedicationLog(
     ended = it[MedicationLogs.ended],
     notes =it[MedicationLogs.notes],
     userId = it[MedicationLogs.userId]
+)
+fun mapToSleepRecord(it: ResultRow) = SleepRecord(
+    id = it[SleepRecords.id].value,
+    date = it[SleepRecords.date],
+    sleepQuality = it[SleepRecords.sleepQuality],
+    sleepDuration =it[SleepRecords.sleepDuration],
+    wakeUpTime = it[SleepRecords.wakeUpTime],
 )
