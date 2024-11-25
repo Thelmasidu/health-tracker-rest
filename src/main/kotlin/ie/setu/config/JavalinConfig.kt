@@ -5,6 +5,7 @@ import io.javalin.Javalin
 import io.javalin.apibuilder.ApiBuilder.*
 import io.javalin.json.JavalinJackson
 import io.javalin.http.HttpStatus
+import io.javalin.vue.VueComponent
 import utils.jsonObjectMapper
 
 class JavalinConfig {
@@ -12,11 +13,17 @@ class JavalinConfig {
         System.getenv("PORT")?.toIntOrNull() ?: 7001
 
     fun startJavalinService(): Javalin {
+
         val app = Javalin.create { config ->
             config.jsonMapper(JavalinJackson(jsonObjectMapper()))
+            // Enable Webjars for static files
+            config.staticFiles.enableWebjars()
+            // Vue configuration
+            config.vue.vueInstanceNameInJs = "app"
+
+
+            config.jsonMapper(JavalinJackson(jsonObjectMapper()))
             config.router.apiBuilder {
-                // Base route
-                get("/") { it.redirect("api/users", HttpStatus.FOUND) }
 
                 // User endpoints
                 path("api/users") {
@@ -96,6 +103,22 @@ class JavalinConfig {
                         delete("{record-id}", SleepRecordController::deleteSleepRecordForUser)
                     }
                 }
+
+// The @routeComponent that we added in layout.html earlier will be replaced
+// by the String inside the VueComponent. This means a call to / will load
+// the layout and display our <home-page> component.
+                get("/", VueComponent("<home-page></home-page>"))
+
+                get("/users", VueComponent("<user-overview></user-overview>"))
+                get("/activities", VueComponent("<activity-overview></activity-overview>"))
+                get("/users/{user-id}", VueComponent("<user-profile></user-profile>"))
+                get("activities/{activity-id}", VueComponent("<activity-profile></activity-profile>"))
+                get("/users/{user-id}/activities", VueComponent("<user-activity-overview></user-activity-overview>"))
+                get("/activities/{activity-id}/activities", VueComponent("<user-activity-overview></user-activity-overview>"))
+                get("/histories", VueComponent("<history-overview></history-overview>"))
+                get("/histories/{history-id}", VueComponent("<history-profile></history-profile>"))
+                get("/medication", VueComponent("<medication-overview></medication-overview>"))
+                get("/medication/{medication-id}", VueComponent("<medication-profile></medication-profile>"))
             }
         }.apply {
             exception(Exception::class.java) { e, _ -> e.printStackTrace() }
