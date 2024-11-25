@@ -20,6 +20,26 @@
           </div>
         </div>
       </div>
+      <div class="col">
+        <div class="card">
+          <h5 class="card-header">User Health History</h5>
+          <div class="card-body">
+            <h5 class="card-title">{{histories.length}} histories</h5>
+            <a href="/histories" class="btn btn-primary">More Details...</a>
+          </div>
+        </div>
+      </div>
+    </div>
+      <div class="row">
+      <div class="col">
+        <div class="card">
+          <h5 class="card-header"> View Medication Logs</h5>
+          <div class="card-body">
+            <h5 class="card-title">{{medication.length}} medication</h5>
+            <a href="/medication" class="btn btn-primary">More Details...</a>
+          </div>
+        </div>
+      </div>
     </div>
   </app-layout>
 </template>
@@ -30,7 +50,9 @@ app.component('home-page',
       template: "#home-page",
       data: () => ({
         users: [],
-        activities: []
+        activities: [],
+        histories:[],
+        medication:[]
       }),
       created() {
         axios.get("/api/users")
@@ -39,6 +61,12 @@ app.component('home-page',
         axios.get("/api/activities")
             .then(res => this.activities = res.data)
             .catch(() => alert("Error while fetching activities"));
+        axios.get("/api/histories")
+            .then(res => this.histories = res.data)
+            .catch(() => alert("Error while fetching histories"));
+        axios.get("/api/medication")
+            .then(res => this.medication = res.data)
+            .catch(() => alert("Error while fetching medication"));
       }
     });
 </script>
