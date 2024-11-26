@@ -7,7 +7,7 @@
         <label class="col-form-label">HeartRate: </label>
         <input class="form-control" v-model="history.heartRate" name="heart-rate" type="text"/><br>
         <label class="col-form-label">CholesterolLevels: </label>
-        <input class="form-control" v-model="history.cholesterolLevels" name="cholesterol-levels" /><br>
+        <input class="form-control" v-model="history.heartRate" name="cholesterol-levels" /><br>
         <label class="col-form-label">BloodSugarLevels: </label>
         <input class="form-control" v-model="history.bloodSugarLevels" name="blood-sugar-levels" /><br>
         <label class="col-form-label">Weight: </label>
