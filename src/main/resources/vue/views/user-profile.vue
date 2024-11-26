@@ -9,10 +9,16 @@
         <label class="col-form-label">Email: </label>
         <input class="form-control" v-model="user.email" name="email" type="email"/><br>
       </form>
+
       <dt v-if="user">
         <br>
         <a :href="`/users/${user.id}/activities`">View User Activities</a>
+        <br>
+        <a :href="`/users/${user.id}/histories`">View User Histories</a>
+        <br>
+        <a :href="`/users/${user.id}/medication`">View User Medication Logs</a>
       </dt>
+
     </div>
   </app-layout>
 
