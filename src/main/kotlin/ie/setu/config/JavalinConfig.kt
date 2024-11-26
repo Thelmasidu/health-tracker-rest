@@ -119,6 +119,8 @@ class JavalinConfig {
                 get("/histories/{history-id}", VueComponent("<history-profile></history-profile>"))
                 get("/medication", VueComponent("<medication-overview></medication-overview>"))
                 get("/medication/{medication-id}", VueComponent("<medication-profile></medication-profile>"))
+                get("/users/{user-id}/histories", VueComponent("<user-history-overview></user-history-overview>"))
+                get("/users/{user-id}/medication", VueComponent("<user-medication-overview></user-medication-overview>"))
             }
         }.apply {
             exception(Exception::class.java) { e, _ -> e.printStackTrace() }
