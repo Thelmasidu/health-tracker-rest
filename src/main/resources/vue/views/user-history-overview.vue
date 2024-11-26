@@ -1,7 +1,9 @@
-<template id="history-profile">
+<template id="user-history-overview">
   <app-layout>
-    <div>
-      <form v-if="history">
+  <div>
+    <h3>Histories list </h3>
+
+      <div v-for="history in histories">
         <label class="col-form-label">History ID: </label>
         <input class="form-control" v-model="history.id" name="id" type="number" readonly/><br>
         <label class="col-form-label">HeartRate: </label>
@@ -19,34 +21,23 @@
         <label class="col-form-label">BloodPressure: </label>
         <input class="form-control" v-model="history.bloodPressure" name="blood-pressure" /><br>
 
-      </form>
+      </div>
 
-    </div>
+  </div>
   </app-layout>
-
 </template>
 
 <script>
-//history profile component
-app.component("history-profile", {
-  template: "#history-profile",
+app.component("user-history-overview",{
+  template: "#user-history-overview",
   data: () => ({
-    history: null
+    histories: [],
   }),
-  created: function () {
-    const historyId = this.$javalin.pathParams["history-id"];
-    const url = `/api/histories/${historyId}`
-    axios.get(url)
-        .then(res =>
-            {
-              console.log("API Response:", res)
-              //res -response. Only the stuffs inside data objects
-              this.history = res.data;
-              console.log("History Data:", this.history);
-            }
-        )
-
-        .catch(() => alert("Error while fetching history" + historyId));
+  created() {
+    const userId = this.$javalin.pathParams["user-id"];
+    axios.get(`/api/users/${userId}/histories`)
+        .then(res => this.histories = res.data)
+        .catch(() => alert("Error while fetching histories"));
   }
 });
 </script>
