@@ -47,15 +47,15 @@
       <div class="card-footer text-left">
         <p  v-if="activities.length === 0"> No activities yet...</p>
         <p  v-if="activities.length > 0"> Activities so far...</p>
-        <p  v-if="histories.length === 0"> No Histories yet...</p>
-        <p  v-if="histories.length > 0"> Histories so far...</p>
-        <p  v-if="medication.length === 0"> No Medication Logs yet...</p>
-        <p  v-if="medication.length > 0"> Medication Logs so far...</p>
         <ul>
           <li v-for="activity in activities">
             {{ activity.description }} for {{ activity.duration }} minutes
           </li>
         </ul>
+
+        <p  v-if="histories.length === 0"> No Histories yet...</p>
+        <p  v-if="histories.length > 0"> Histories so far...</p>
+
         <div v-for="history in histories">
           <label class="col-form-label">History ID: </label>
           <input class="form-control" v-model="history.id" name="id" type="number" readonly/><br>
@@ -74,6 +74,8 @@
           <label class="col-form-label">BloodPressure: </label>
           <input class="form-control" v-model="history.bloodPressure" name="blood-pressure" /><br>
         </div>
+        <p  v-if="medication.length === 0"> No Medication Logs yet...</p>
+        <p  v-if="medication.length > 0"> Medication Logs so far...</p>
         <div v-for="medication in medication">
           <label class="col-form-label"> Medication ID: </label>
           <input class="form-control" v-model="medication.id" name="id" type="number" readonly/><br>
