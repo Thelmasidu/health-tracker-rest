@@ -5,7 +5,7 @@ on: [push, pull_request]
 jobs:
 
   package:
-    name: Maven Package (no tests) 
+    name: Maven Package (no tests)
     runs-on: ubuntu-latest
 
     steps:
@@ -18,7 +18,7 @@ jobs:
       - name: Maven Package
         run: mvn -B clean package -DskipTests
 
-        # Create Artifact - Jar Builds 
+      # Create Artifact - Jar Builds 
       - name: Jar Builds
         uses: actions/upload-artifact@v4.4.2
         with:
@@ -30,19 +30,31 @@ jobs:
     needs: package
     steps:
 
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it 
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
 
       # Runs the Maven dokka task
       - name: Dokka with Maven
         run: mvn -B dokka:dokka
 
-      # Builds a zip file with the KDoc generated website in it 
+      # Builds a zip file with the KDoc generated website in it
       - name: Archive KDoc Documentation
         uses: actions/upload-artifact@v4.4.2
         with:
           name: KDoc Documentation Site
           path: target/dokka 
+
+      # Close Stale Issues
+      - name: Close Stale Issues
+        uses: actions/stale@v9.0.0
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          stale-issue-message: "This issue has been marked as stale due to inactivity. Please comment or update it if you are still working on it."
+          close-issue-message: "This issue has been automatically closed due to inactivity."
+          days-before-stale: 30
+          days-before-close: 7
+          stale-issue-label: "stale"
+          close-issue-label: "closed"
 
   test:
     name: Maven Tests
@@ -63,7 +75,7 @@ jobs:
     name: Railway Deploy
     needs: test
     runs-on: ubuntu-latest  
-    
+
     steps:
       - uses: actions/checkout@v4
       - name: Install Railway
