@@ -61,7 +61,7 @@ class HealthHistoryControllerTest {
     }
 
     @Nested
-    inner class ReadActivities {
+   inner class ReadHealthHistories {
 
         @Test
         fun `get all histories from the database returns 200 or 404 response`() {
@@ -76,33 +76,40 @@ class HealthHistoryControllerTest {
 
         @Test
         fun `get all histories by user id when user and histories exists returns 200 response`() {
-            //Arrange - add a user and 3 associated histories that we plan to retrieve
+            // Arrange - add a user and 3 associated histories
             val addedUser: User = jsonToObject(addUser(validName, validEmail).body.toString())
-            addHealthHistory(
+
+            val response1 = addHealthHistory(
                 healthHistories[0].heartRate, healthHistories[0].cholesterolLevels,
                 healthHistories[0].bloodSugarLevels, healthHistories[0].weight,
                 healthHistories[0].height, healthHistories[0].dateOfRecord,
                 healthHistories[0].bloodPressure, addedUser.id
             )
-            addHealthHistory(
+            assertEquals(201, response1.status)
+
+            val response2 = addHealthHistory(
                 healthHistories[1].heartRate, healthHistories[1].cholesterolLevels,
                 healthHistories[1].bloodSugarLevels, healthHistories[1].weight,
                 healthHistories[1].height, healthHistories[1].dateOfRecord,
                 healthHistories[1].bloodPressure, addedUser.id
             )
-            addHealthHistory(
+            assertEquals(201, response2.status)
+
+            val response3 = addHealthHistory(
                 healthHistories[2].heartRate, healthHistories[2].cholesterolLevels,
                 healthHistories[2].bloodSugarLevels, healthHistories[2].weight,
                 healthHistories[2].height, healthHistories[2].dateOfRecord,
                 healthHistories[2].bloodPressure, addedUser.id
             )
-            //Assert and Act - retrieve the three added histories by user id
+            assertEquals(201, response3.status)
+
+            // Act - retrieve the three added histories by user id
             val response = retrieveHealthHistoriesByUserId(addedUser.id)
             assertEquals(200, response.status)
             val retrievedHealthHistories = jsonNodeToObject<Array<HealthHistory>>(response)
             assertEquals(3, retrievedHealthHistories.size)
 
-            //After - delete the added user and assert a 204 is returned (histories are cascade deleted)
+            // After - delete the added user
             assertEquals(204, deleteUser(addedUser.id).status)
         }
 
@@ -320,7 +327,7 @@ class HealthHistoryControllerTest {
 
     //helper function to retrieve activities by user id
     private fun retrieveHealthHistoriesByUserId(id: Int): HttpResponse<JsonNode> {
-        return Unirest.get(origin + "/api/users/${id}/histories").asJson()
+        return Unirest.get("$origin/api/users/$id/histories").asJson()
     }
 
     //helper function to retrieve activity by activity id
