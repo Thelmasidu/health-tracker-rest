@@ -30,7 +30,7 @@ val updatedHeartRate = 38
 val updatedCholesterolLevels = 236.0
 val updatedBloodSugarLevels = 96.0
 val updatedWeight = 12.8
-val updatedHeight = 6
+val updatedHeight = 6.9
 val updatedDateOfRecord = DateTime.parse("2020-06-11T05:59:27.258Z")
 val updatedBloodPressure = "Updated Blood Pressure"
 
