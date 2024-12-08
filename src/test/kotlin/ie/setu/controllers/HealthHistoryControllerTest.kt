@@ -231,23 +231,25 @@ class HealthHistoryControllerTest {
 
             @Test
             fun `deleting a history by id when it exists, returns a 204 response`() {
-
-                //Arrange - add a user and an associated activity that we plan to do a delete on
-                val addedUser : User = jsonToObject(addUser(validName, validEmail).body.toString())
+                // Arrange: Add a user and a health history
+                val addedUser: User = jsonToObject(addUser(validName, validEmail).body.toString())
                 val addHealthHistoryResponse = addHealthHistory(
                     healthHistories[0].heartRate, healthHistories[0].cholesterolLevels,
                     healthHistories[0].bloodSugarLevels, healthHistories[0].weight,
                     healthHistories[0].height, healthHistories[0].dateOfRecord,
-                    healthHistories[0].bloodPressure, addedUser.id)
+                    healthHistories[0].bloodPressure, addedUser.id
+                )
                 assertEquals(201, addHealthHistoryResponse.status)
 
-                //Act & Assert - delete the added activity and assert a 204 is returned
                 val addedHealthHistory = jsonNodeToObject<HealthHistory>(addHealthHistoryResponse)
-                assertEquals(404, deleteHealthHistoriesByUserId(addedHealthHistory.id).status)
 
-                //After - delete the user
+                // Act & Assert: Delete the added history by its ID and expect 204
+                assertEquals(204, deleteHealthHistoryByHealthHistoryId(addedHealthHistory.id).status)
+
+                // After: Clean up by deleting the user
                 deleteUser(addedUser.id)
             }
+
 
             @Test
             fun `deleting all histories by userid when it exists, returns a 204 response`() {
@@ -309,6 +311,7 @@ class HealthHistoryControllerTest {
     private fun deleteHealthHistoryByHealthHistoryId(id: Int): HttpResponse<String> {
         return Unirest.delete(origin + "/api/histories/$id").asString()
     }
+
 
     //helper function to retrieve all activities
     private fun retrieveAllHealthHistories(): HttpResponse<JsonNode> {
