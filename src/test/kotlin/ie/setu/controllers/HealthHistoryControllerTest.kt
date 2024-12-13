@@ -1,6 +1,5 @@
 package ie.setu.controllers
 
-import domain.Activity
 import ie.setu.config.DbConfig
 import ie.setu.domain.HealthHistory
 import ie.setu.domain.User
@@ -348,7 +347,6 @@ class HealthHistoryControllerTest {
             """.trimIndent())
             .asJson()
     }
-
 
     //helper function to add a test user to the database
     private fun updateHealthHistory(id: Int, heartRate: Int, cholesterolLevels: Double, bloodSugarLevels: Double,
