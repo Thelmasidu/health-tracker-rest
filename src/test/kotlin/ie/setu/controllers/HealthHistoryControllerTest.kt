@@ -172,8 +172,15 @@ class HealthHistoryControllerTest {
                 //Act & Assert - attempt to update the details of an history/user that doesn't exist
                 assertEquals(
                     404, updateHealthHistory(
-                        healthHistoryID,  updatedHeartRate, updatedCholesterolLevels,
-                        updatedBloodSugarLevels, updatedWeight, updatedHeight, updatedDateOfRecord, updatedBloodPressure, userId
+                        healthHistoryID,
+                        updatedHeartRate,
+                        updatedCholesterolLevels,
+                        updatedBloodSugarLevels,
+                        updatedWeight,
+                        updatedHeight,
+                        updatedDateOfRecord,
+                        updatedBloodPressure,
+                        userId
                     ).status
                 )
             }
@@ -220,68 +227,73 @@ class HealthHistoryControllerTest {
                     //Act & Assert - attempt to delete a user that doesn't exist
                     assertEquals(404, deleteHealthHistoryByHealthHistoryId(-1).status)
                 }
-            }
 
-            @Test
-            fun `deleting histories by user id when it doesn't exist, returns a 404 response`() {
-                //Act & Assert - attempt to delete a user that doesn't exist
-                assertEquals(404, deleteHealthHistoriesByUserId(-1).status)
-            }
 
-            @Test
-            fun `deleting a history by id when it exists, returns a 204 response`() {
+                @Test
+                fun `deleting histories by user id when it doesn't exist, returns a 404 response`() {
+                    //Act & Assert - attempt to delete a user that doesn't exist
+                    assertEquals(404, deleteHealthHistoriesByUserId(-1).status)
+                }
 
-                //Arrange - add a user and an associated activity that we plan to do a delete on
-                val addedUser : User = jsonToObject(addUser(validName, validEmail).body.toString())
-                val addHealthHistoryResponse = addHealthHistory(
-                    healthHistories[0].heartRate, healthHistories[0].cholesterolLevels,
-                    healthHistories[0].bloodSugarLevels, healthHistories[0].weight,
-                    healthHistories[0].height, healthHistories[0].dateOfRecord,
-                    healthHistories[0].bloodPressure, addedUser.id)
-                assertEquals(201, addHealthHistoryResponse.status)
+                @Test
+                fun `deleting a history by id when it exists, returns a 204 response`() {
 
-                //Act & Assert - delete the added activity and assert a 204 is returned
-                val addedHealthHistory = jsonNodeToObject<HealthHistory>(addHealthHistoryResponse)
-                assertEquals(404, deleteHealthHistoriesByUserId(addedHealthHistory.id).status)
+                    //Arrange - add a user and an associated activity that we plan to do a delete on
+                    val addedUser: User = jsonToObject(addUser(validName, validEmail).body.toString())
+                    val addHealthHistoryResponse = addHealthHistory(
+                        healthHistories[0].heartRate, healthHistories[0].cholesterolLevels,
+                        healthHistories[0].bloodSugarLevels, healthHistories[0].weight,
+                        healthHistories[0].height, healthHistories[0].dateOfRecord,
+                        healthHistories[0].bloodPressure, addedUser.id
+                    )
+                    assertEquals(201, addHealthHistoryResponse.status)
 
-                //After - delete the user
-                deleteUser(addedUser.id)
-            }
+                    //Act & Assert - delete the added activity and assert a 204 is returned
+                    val addedHealthHistory = jsonNodeToObject<HealthHistory>(addHealthHistoryResponse)
+                    assertEquals(404, deleteHealthHistoriesByUserId(addedHealthHistory.id).status)
 
-            @Test
-            fun `deleting all histories by userid when it exists, returns a 204 response`() {
+                    //After - delete the user
+                    deleteUser(addedUser.id)
+                }
 
-                //Arrange - add a user and 3 associated activities that we plan to do a cascade delete
-                val addedUser : User = jsonToObject(addUser(validName, validEmail).body.toString())
-                val addHealthHistoryResponse1 = addHealthHistory(
-                    healthHistories[0].heartRate, healthHistories[0].cholesterolLevels,
-                    healthHistories[0].bloodSugarLevels, healthHistories[0].weight,
-                    healthHistories[0].height, healthHistories[0].dateOfRecord,
-                    healthHistories[0].bloodPressure, addedUser.id)
-                assertEquals(201, addHealthHistoryResponse1.status)
-                val addHealthHistoryResponse2 = addHealthHistory(
-                    healthHistories[1].heartRate, healthHistories[1].cholesterolLevels,
-                    healthHistories[1].bloodSugarLevels, healthHistories[1].weight,
-                    healthHistories[1].height, healthHistories[1].dateOfRecord,
-                    healthHistories[1].bloodPressure, addedUser.id)
-                assertEquals(201, addHealthHistoryResponse2.status)
-                val addHealthHistoryResponse3 = addHealthHistory(
-                    healthHistories[2].heartRate, healthHistories[2].cholesterolLevels,
-                    healthHistories[2].bloodSugarLevels, healthHistories[2].weight,
-                    healthHistories[2].height, healthHistories[2].dateOfRecord,
-                    healthHistories[2].bloodPressure, addedUser.id)
-                assertEquals(201, addHealthHistoryResponse3.status)
+                @Test
+                fun `deleting all histories by userid when it exists, returns a 204 response`() {
 
-                //Act & Assert - delete the added user and assert a 204 is returned
-                assertEquals(204, deleteUser(addedUser.id).status)
+                    //Arrange - add a user and 3 associated activities that we plan to do a cascade delete
+                    val addedUser: User = jsonToObject(addUser(validName, validEmail).body.toString())
+                    val addHealthHistoryResponse1 = addHealthHistory(
+                        healthHistories[0].heartRate, healthHistories[0].cholesterolLevels,
+                        healthHistories[0].bloodSugarLevels, healthHistories[0].weight,
+                        healthHistories[0].height, healthHistories[0].dateOfRecord,
+                        healthHistories[0].bloodPressure, addedUser.id
+                    )
+                    assertEquals(201, addHealthHistoryResponse1.status)
+                    val addHealthHistoryResponse2 = addHealthHistory(
+                        healthHistories[1].heartRate, healthHistories[1].cholesterolLevels,
+                        healthHistories[1].bloodSugarLevels, healthHistories[1].weight,
+                        healthHistories[1].height, healthHistories[1].dateOfRecord,
+                        healthHistories[1].bloodPressure, addedUser.id
+                    )
+                    assertEquals(201, addHealthHistoryResponse2.status)
+                    val addHealthHistoryResponse3 = addHealthHistory(
+                        healthHistories[2].heartRate, healthHistories[2].cholesterolLevels,
+                        healthHistories[2].bloodSugarLevels, healthHistories[2].weight,
+                        healthHistories[2].height, healthHistories[2].dateOfRecord,
+                        healthHistories[2].bloodPressure, addedUser.id
+                    )
+                    assertEquals(201, addHealthHistoryResponse3.status)
 
-                //Act & Assert - attempt to retrieve the deleted activities
-                val addedHealthHistory1 = jsonNodeToObject<HealthHistory>(addHealthHistoryResponse1)
-                val addedHealthHistory2 = jsonNodeToObject<HealthHistory>(addHealthHistoryResponse2)
-                val addedHealthHistory3 = jsonNodeToObject<HealthHistory>(addHealthHistoryResponse3)
-                assertEquals(200, retrieveHealthHistoryByHealthHistoryId(addedHealthHistory1.id).status)
-                assertEquals(200, retrieveHealthHistoryByHealthHistoryId(addedHealthHistory2.id).status)
-                assertEquals(200, retrieveHealthHistoryByHealthHistoryId(addedHealthHistory3.id).status)
+                    //Act & Assert - delete the added user and assert a 204 is returned
+                    assertEquals(204, deleteUser(addedUser.id).status)
+
+                    //Act & Assert - attempt to retrieve the deleted activities
+                    val addedHealthHistory1 = jsonNodeToObject<HealthHistory>(addHealthHistoryResponse1)
+                    val addedHealthHistory2 = jsonNodeToObject<HealthHistory>(addHealthHistoryResponse2)
+                    val addedHealthHistory3 = jsonNodeToObject<HealthHistory>(addHealthHistoryResponse3)
+                    assertEquals(200, retrieveHealthHistoryByHealthHistoryId(addedHealthHistory1.id).status)
+                    assertEquals(200, retrieveHealthHistoryByHealthHistoryId(addedHealthHistory2.id).status)
+                    assertEquals(200, retrieveHealthHistoryByHealthHistoryId(addedHealthHistory3.id).status)
+                }
             }
         }
 
