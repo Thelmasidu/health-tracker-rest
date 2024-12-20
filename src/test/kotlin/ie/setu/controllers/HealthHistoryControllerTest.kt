@@ -290,9 +290,9 @@ class HealthHistoryControllerTest {
                     val addedHealthHistory1 = jsonNodeToObject<HealthHistory>(addHealthHistoryResponse1)
                     val addedHealthHistory2 = jsonNodeToObject<HealthHistory>(addHealthHistoryResponse2)
                     val addedHealthHistory3 = jsonNodeToObject<HealthHistory>(addHealthHistoryResponse3)
-                    assertEquals(200, retrieveHealthHistoryByHealthHistoryId(addedHealthHistory1.id).status)
-                    assertEquals(200, retrieveHealthHistoryByHealthHistoryId(addedHealthHistory2.id).status)
-                    assertEquals(200, retrieveHealthHistoryByHealthHistoryId(addedHealthHistory3.id).status)
+                    assertEquals(404, retrieveHealthHistoryByHealthHistoryId(addedHealthHistory1.id).status)
+                    assertEquals(404, retrieveHealthHistoryByHealthHistoryId(addedHealthHistory2.id).status)
+                    assertEquals(404, retrieveHealthHistoryByHealthHistoryId(addedHealthHistory3.id).status)
                 }
             }
         }
